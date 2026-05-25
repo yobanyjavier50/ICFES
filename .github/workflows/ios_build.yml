@@ -9,7 +9,7 @@ jobs:
 
     steps:
       - name: Clonar el repositorio
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Configurar Flutter
         uses: subosito/flutter-action@v2
@@ -30,7 +30,7 @@ jobs:
           zip -qq -r aplicacion.ipa Payload
 
       - name: Subir archivo IPA generado
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ios-app-release
           path: build/ios/iphoneos/aplicacion.ipa
