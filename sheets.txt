@@ -1,0 +1,77 @@
+const SHEET_USUARIOS = "Usuarios";
+const SHEET_GRUPOS = "Grupos";
+const SHEET_PREGUNTAS = "Preguntas";
+const SHEET_RESULTADOS = "Resultados";
+
+function doPost(e) {
+  var action = e.parameter.action;
+  try {
+    if (action == "registrarUsuario") {
+      SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_USUARIOS).appendRow([e.parameter.correo, e.parameter.nombre, e.parameter.rol, e.parameter.grupo, new Date()]);
+      return ContentService.createTextOutput(JSON.stringify({"success": true})).setMimeType(ContentService.MimeType.JSON);
+    }
+    else if (action == "crearGrupo") {
+      SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_GRUPOS).appendRow([e.parameter.nombreGrupo]);
+      return ContentService.createTextOutput(JSON.stringify({"success": true})).setMimeType(ContentService.MimeType.JSON);
+    }
+    // --- NUEVO: EDITAR NOMBRE DE GRUPO ---
+    else if (action == "editarGrupo") {
+      var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_GRUPOS);
+      var data = sheet.getDataRange().getValues();
+      for (var i = 1; i < data.length; i++) {
+        if (data[i][0] == e.parameter.nombreAntiguo) {
+          sheet.getRange(i + 1, 1).setValue(e.parameter.nombreNuevo);
+          break;
+        }
+      }
+      return ContentService.createTextOutput(JSON.stringify({"success": true})).setMimeType(ContentService.MimeType.JSON);
+    }
+    else if (action == "eliminarGrupo") {
+      var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_GRUPOS);
+      var data = sheet.getDataRange().getValues();
+      for (var i = data.length - 1; i >= 1; i--) {
+        if (data[i][0] == e.parameter.nombreGrupo) { sheet.deleteRow(i + 1); break; }
+      }
+      return ContentService.createTextOutput(JSON.stringify({"success": true})).setMimeType(ContentService.MimeType.JSON);
+    }
+    else if (action == "editarPregunta") {
+      var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_PREGUNTAS);
+      var data = sheet.getDataRange().getValues();
+      for (var i = 1; i < data.length; i++) {
+        if (data[i][0] == e.parameter.idPregunta) {
+          sheet.getRange(i + 1, 4).setValue(e.parameter.pregunta);
+          sheet.getRange(i + 1, 5).setValue(e.parameter.opciones);
+          sheet.getRange(i + 1, 6).setValue(e.parameter.respuesta);
+          sheet.getRange(i + 1, 7).setValue(e.parameter.retro);
+          break;
+        }
+      }
+      return ContentService.createTextOutput(JSON.stringify({"success": true})).setMimeType(ContentService.MimeType.JSON);
+    }
+    // ... (Mantener resto de funciones: eliminarPregunta, eliminarBloque, etc.)
+  } catch(e) { return ContentService.createTextOutput(JSON.stringify({"success": false})).setMimeType(ContentService.MimeType.JSON); }
+}
+
+function doGet(e) {
+  var action = e.parameter.action;
+  try {
+    if (action == "obtenerGrupos") {
+      var data = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_GRUPOS).getDataRange().getValues();
+      var grupos = [];
+      for (var i = 1; i < data.length; i++) { if(data[i][0] != "") grupos.push(data[i][0].toString()); }
+      return ContentService.createTextOutput(JSON.stringify(grupos)).setMimeType(ContentService.MimeType.JSON);
+    }
+    else if (action == "obtenerPreguntas") {
+      var data = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_PREGUNTAS).getDataRange().getValues();
+      var preguntas = [];
+      for (var i = 1; i < data.length; i++) {
+        if (!e.parameter.categoria || data[i][1] == e.parameter.categoria) {
+          var ops = [];
+          try { ops = JSON.parse(data[i][4]); } catch(err) { ops = [data[i][4].toString()]; }
+          preguntas.push({ "id": data[i][0], "categoria": data[i][1], "bloqueId": data[i][2], "pregunta": data[i][3], "opciones": ops, "respuesta": data[i][5].toString(), "retro": data[i][6], "img": data[i][7] });
+        }
+      }
+      return ContentService.createTextOutput(JSON.stringify(preguntas)).setMimeType(ContentService.MimeType.JSON);
+    }
+  } catch(e) { return ContentService.createTextOutput("[]").setMimeType(ContentService.MimeType.JSON); }
+}

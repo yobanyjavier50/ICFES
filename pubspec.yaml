@@ -1,0 +1,47 @@
+name: icfes
+description:
+
+publish_to:
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.5
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.1.0
+  shared_preferences: ^2.2.1
+  fl_chart: ^0.65.0
+  image_picker: ^1.0.4
+  path_provider: ^2.1.1
+  audioplayers: ^5.2.1
+
+
+# ... (tu código anterior)
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  # AGREGA ESTA LÍNEA AQUÍ:
+  flutter_launcher_icons: ^0.13.1
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/logo.jpeg
+    - assets/planeta.png
+    - assets/estudiante.png
+    - assets/cara.png
+    - assets/sounds/
+
+# AGREGA TODO ESTE BLOQUE AL FINAL DEL ARCHIVO:
+flutter_icons:
+  android: true
+  ios: false
+  image_path: "assets/logo.jpeg"
+  # Opcional: Para Android 12+ (iconos adaptativos)
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/logo.jpeg"

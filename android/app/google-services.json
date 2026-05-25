@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "384890870180",
+    "project_id": "champapp-1ecb0",
+    "storage_bucket": "champapp-1ecb0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384890870180:android:e450bc48fb22ac45758931",
+        "android_client_info": {
+          "package_name": "com.example.icfes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "384890870180-g9r5oc2h8rtvp2pjdb3nsn0ieacm0dme.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOOjW627q4pZJTynycwFN6dedixN8RDE8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "384890870180-g9r5oc2h8rtvp2pjdb3nsn0ieacm0dme.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
