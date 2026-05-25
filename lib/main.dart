@@ -32,7 +32,7 @@ class AplicacionPrincipal extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Saber 11 English',
+      title: 'Champ App 2026 by Hernan and Brandon',
       theme: ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: const Color(0xFFFAFAFA),

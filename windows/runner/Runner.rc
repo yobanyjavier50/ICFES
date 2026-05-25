@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "icfes" "\0"
+            VALUE "FileDescription", "Champ App 2026 by Hernan and Brandon"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "icfes" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2026 com.example. All rights reserved." "\0"
             VALUE "OriginalFilename", "icfes.exe" "\0"
-            VALUE "ProductName", "icfes" "\0"
+            VALUE "ProductName", "Champ App 2026 by Hernan and Brandon"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
