@@ -27,13 +27,13 @@ class _StudentResultsScreenState extends State<StudentResultsScreen> {
     final todos = await GoogleSheetsService.obtenerResultados();
 
     Map<String, double> fallosPorcentaje = {};
-    List<String> tipos = ['1', '2', '3', '4', '5'];
+    List<String> tipos = ['1', '2', '3', '4', '5', '6', '7'];
 
     for (String tipo in tipos) {
       int total = prefs.getInt('total_tipo_$tipo') ?? 0;
       int errores = prefs.getInt('errores_tipo_$tipo') ?? 0;
 
-      if (total >= 5) {
+      if (total > 0) {
         double porcentaje = (errores / total) * 100;
         if (porcentaje >= 60.0) {
           fallosPorcentaje[tipo] = porcentaje;
@@ -53,11 +53,13 @@ class _StudentResultsScreenState extends State<StudentResultsScreen> {
 
   String _obtenerNombreTema(String tipo) {
     switch (tipo) {
-      case '1': return "Parte 1 (Vocabulario y Descripciones)";
-      case '2': return "Parte 2 (Conversaciones)";
-      case '3': return "Parte 3 (Lectura Larga)";  // <-- Corregido
-      case '4': return "Parte 4 (Lectura Corta)";  // <-- Corregido
-      case '5': return "Parte 5 (Completar Texto)";
+      case '1': return "Parte 1 (Vocabulario / Descripciones)";
+      case '2': return "Parte 2 (Avisos / Carteles)";
+      case '3': return "Parte 3 (Conversaciones Cortas)";
+      case '4': return "Parte 4 (Textos Incompletos Básicos)";
+      case '5': return "Parte 5 (Comprensión de Lectura Literal)";
+      case '6': return "Parte 6 (Comprensión de Lectura Inferencial)";
+      case '7': return "Parte 7 (Textos Incompletos Avanzados)";
       default: return "Tema General";
     }
   }

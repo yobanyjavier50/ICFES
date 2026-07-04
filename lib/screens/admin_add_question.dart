@@ -41,10 +41,14 @@ class _AdminAddQuestionScreenState extends State<AdminAddQuestionScreen> {
   void _cambiarTipoGrupo(String tipo) {
     setState(() {
       _tipoGrupo = tipo;
-      // Adaptación automática al formato ICFES:
-      if (tipo == '1') _numOpciones = 8; // Descripciones (A-H)
-      else if (tipo == '2' || tipo == '4') _numOpciones = 3; // Conversaciones y Textos largos
-      else _numOpciones = 4; // Textos cortos y Completar espacios (3 y 5)
+      // Adaptación automática al formato real del ICFES:
+      if (tipo == '1') {
+        _numOpciones = 8; // Parte 1 usa A-H
+      } else if (tipo == '6' || tipo == '7') {
+        _numOpciones = 4; // Partes 6 y 7 usan A, B, C, D
+      } else {
+        _numOpciones = 3; // Partes 2, 3, 4 y 5 usan solo A, B, C
+      }
       _generarOpciones();
     });
   }
@@ -132,11 +136,13 @@ class _AdminAddQuestionScreenState extends State<AdminAddQuestionScreen> {
                         DropdownButton<String>(
                             value: _tipoGrupo,
                             items: const [
-                              DropdownMenuItem(value: '1', child: Text("Parte 1 (A-H)")),
-                              DropdownMenuItem(value: '2', child: Text("Parte 2 (Convers.)")),
-                              DropdownMenuItem(value: '3', child: Text("Parte 3 (Lectura Larga)")),
-                              DropdownMenuItem(value: '4', child: Text("Parte 4 (Lectura Corta)")),
-                              DropdownMenuItem(value: '5', child: Text("Parte 5 (Completar texto)"))
+                              DropdownMenuItem(value: '1', child: Text("Parte 1 (Vocabulario)")),
+                              DropdownMenuItem(value: '2', child: Text("Parte 2 (Avisos)")),
+                              DropdownMenuItem(value: '3', child: Text("Parte 3 (Conversaciones)")),
+                              DropdownMenuItem(value: '4', child: Text("Parte 4 (Texto Incompleto)")),
+                              DropdownMenuItem(value: '5', child: Text("Parte 5 (Lectura Literal)")),
+                              DropdownMenuItem(value: '6', child: Text("Parte 6 (Lectura Inferencial)")),
+                              DropdownMenuItem(value: '7', child: Text("Parte 7 (Texto Complejo)"))
                             ],
                             onChanged: (v) => _cambiarTipoGrupo(v!)
                         ),

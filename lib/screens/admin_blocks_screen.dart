@@ -197,25 +197,6 @@ class _AdminBlocksScreenState extends State<AdminBlocksScreen> {
                   child: ListTile(
                     title: Text(p['pregunta'], maxLines: 2, overflow: TextOverflow.ellipsis),
                     subtitle: Text("Respuesta: ${p['respuesta']}"),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                            icon: const Icon(Icons.edit, color: Colors.blue),
-                            onPressed: () {
-                              AudioService.playClick(); // 🔥 Sonido al abrir diálogo de edición
-                              _editarPreguntaDialogo(p);
-                            }
-                        ),
-                        IconButton(
-                            icon: const Icon(Icons.delete_outline, color: Colors.red),
-                            onPressed: () {
-                              AudioService.playClick(); // 🔥 Sonido al borrar una sola pregunta
-                              _borrarPregunta(p['id'].toString());
-                            }
-                        ),
-                      ],
-                    ),
                   ),
                 )),
                 Container(

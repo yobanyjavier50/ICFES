@@ -39,8 +39,8 @@ class _AdminEditBlockScreenState extends State<AdminEditBlockScreen> {
     _tipoGrupo = widget.preguntasIniciales.first['tipoGrupo']?.toString() ?? '1';
     _textoBaseController.text = widget.preguntasIniciales.first['textoBase']?.toString() ?? '';
 
-    _preguntasBloque = widget.preguntasIniciales.map((p) {
-      return {
+    _preguntasBloque = widget.preguntasIniciales.map<Map<String, dynamic>>((p) {
+      return <String, dynamic>{
         "textoBase": p['textoBase']?.toString() ?? "",
         "pregunta": p['pregunta']?.toString() ?? "",
         "opciones": List<String>.from(p['opciones'] ?? []),
@@ -61,9 +61,14 @@ class _AdminEditBlockScreenState extends State<AdminEditBlockScreen> {
   void _cambiarTipoGrupo(String tipo) {
     setState(() {
       _tipoGrupo = tipo;
-      if (tipo == '1') _numOpciones = 8;
-      else if (tipo == '2' || tipo == '4') _numOpciones = 3;
-      else _numOpciones = 4;
+      // Adaptación automática al formato real del ICFES:
+      if (tipo == '1') {
+        _numOpciones = 8; // Parte 1 usa A-H
+      } else if (tipo == '6' || tipo == '7') {
+        _numOpciones = 4; // Partes 6 y 7 usan A, B, C, D
+      } else {
+        _numOpciones = 3; // Partes 2, 3, 4 y 5 usan solo A, B, C
+      }
       _generarOpciones();
     });
   }
@@ -84,7 +89,7 @@ class _AdminEditBlockScreenState extends State<AdminEditBlockScreen> {
       }
 
       setState(() {
-        _preguntasBloque.add({
+        _preguntasBloque.add(<String, dynamic>{
           "textoBase": _textoBaseController.text.trim(),
           "pregunta": _preg.text.trim(),
           "opciones": _ops.map((e) => e.text.trim()).toList(),
@@ -222,11 +227,13 @@ class _AdminEditBlockScreenState extends State<AdminEditBlockScreen> {
                         DropdownButton<String>(
                             value: _tipoGrupo,
                             items: const [
-                              DropdownMenuItem(value: '1', child: Text("Parte 1 (A-H)")),
-                              DropdownMenuItem(value: '2', child: Text("Parte 2 (Convers.)")),
-                              DropdownMenuItem(value: '3', child: Text("Parte 3 (Lectura Larga)")),
-                              DropdownMenuItem(value: '4', child: Text("Parte 4 (Lectura Corta)")),
-                              DropdownMenuItem(value: '5', child: Text("Parte 5 (Completar texto)"))
+                              DropdownMenuItem(value: '1', child: Text("Parte 1 (Vocabulario)")),
+                              DropdownMenuItem(value: '2', child: Text("Parte 2 (Avisos)")),
+                              DropdownMenuItem(value: '3', child: Text("Parte 3 (Conversaciones)")),
+                              DropdownMenuItem(value: '4', child: Text("Parte 4 (Texto Incompleto)")),
+                              DropdownMenuItem(value: '5', child: Text("Parte 5 (Lectura Literal)")),
+                              DropdownMenuItem(value: '6', child: Text("Parte 6 (Lectura Inferencial)")),
+                              DropdownMenuItem(value: '7', child: Text("Parte 7 (Texto Complejo)"))
                             ],
                             onChanged: (v) => _cambiarTipoGrupo(v!)
                         ),

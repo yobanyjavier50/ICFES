@@ -103,6 +103,7 @@ class _AdminStudentProgressScreenState extends State<AdminStudentProgressScreen>
                   ),
                 ),
 
+
                 // Título
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -110,6 +111,31 @@ class _AdminStudentProgressScreenState extends State<AdminStudentProgressScreen>
                     children: [
                       Text(widget.nombreEstudiante.toUpperCase(), textAlign: TextAlign.center, style: TextStyle(color: azulProfundo, fontSize: 22, fontWeight: FontWeight.w900)),
                       const Text("Progreso en Exámenes Reales", style: TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 15),
+
+                      // 🔥 NUEVO: Botón para habilitar examen
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: azulProfundo,
+                          foregroundColor: amarilloBoton,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        ),
+                        onPressed: () async {
+                          setState(() => _cargando = true);
+                          // Llamamos al servicio para activar el intento
+                          await GoogleSheetsService.cambiarEstadoExamen(widget.correoEstudiante, true);
+                          setState(() => _cargando = false);
+
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text("¡Intento habilitado con éxito para este estudiante!"), backgroundColor: Colors.green)
+                            );
+                          }
+                        },
+                        icon: const Icon(Icons.lock_open_rounded),
+                        label: const Text("HABILITAR EXAMEN REAL", style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
                     ],
                   ),
                 ),
