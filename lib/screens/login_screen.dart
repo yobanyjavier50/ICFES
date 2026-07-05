@@ -73,91 +73,21 @@ class _LoginScreenState extends State<LoginScreen> {
 
     setState(() => _cargando = true);
 
-    final prefs = await SharedPreferences.getInstance();
+    // Simula 1 segundo de carga
+    await Future.delayed(const Duration(seconds: 1));
 
-    if (_isAdmin) {
-      if (_key.text == "teacher2026") {
-        await prefs.setString('email', _email.text.trim());
-        await prefs.setBool('esAdmin', true);
+    setState(() => _cargando = false);
 
-        if (mounted) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (_) => const AdminScreen()),
-          );
-        }
-      } else {
-        setState(() => _cargando = false);
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Clave incorrecta")),
-        );
-      }
-
-      return;
-    }
-
-    if (_nombre.text.trim().isEmpty || _grupoSeleccionado == null) {
-      setState(() => _cargando = false);
-
+    // MUESTRA EL MENSAJE DE VERSIÓN DE PRUEBA Y BLOQUEA EL ACCESO
+    if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Completa todos los campos")),
-      );
-
-      return;
-    }
-
-    final usuarioLimpio = _email.text.toLowerCase().trim();
-    final passLimpio = _nombre.text.trim();
-
-    final check = await GoogleSheetsService.verificarUsuario(usuarioLimpio);
-
-    if (check['success'] == true) {
-      if (check['usuario']['nombre'].toString() == passLimpio &&
-          check['usuario']['grupo'] == _grupoSeleccionado) {
-        await prefs.setString('email', usuarioLimpio);
-        await prefs.setString('nombre', passLimpio);
-        await prefs.setString('grupo', _grupoSeleccionado!);
-        await prefs.setBool('esAdmin', false);
-
-        await prefs.setString(
-          'perfil_offline_$usuarioLimpio',
-          json.encode(check['usuario']),
-        );
-
-        // 🔥 Deja la app lista para funcionar offline después del primer login.
-        await _prepararModoOffline(usuarioLimpio);
-
-        if (mounted) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (_) => const StudentDashboard()),
-          );
-        }
-      } else {
-        setState(() => _cargando = false);
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              "Contraseña o grupo incorrecto",
-              style: TextStyle(color: Colors.white),
-            ),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    } else {
-      setState(() => _cargando = false);
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text(
-            check['message']?.toString() ??
-                "Usuario no encontrado. Solo usuarios registrados pueden acceder.",
-            style: const TextStyle(color: Colors.white),
+            "VERSIÓN DE PRUEBA: Acceso denegado. Sistema exclusivo.",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           backgroundColor: Colors.red,
+          duration: Duration(seconds: 4),
         ),
       );
     }
